@@ -3,18 +3,18 @@ services:
   - docker
 
 before_install:
-  - docker build -t repkar/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t robertrepka/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run repkar/react-test npm test -- --coverage
+  - docker run robertrepka/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t repkar/multi-client ./client
-  - docker build -t repkar/multi-nginx ./nginx
-  - docker build -t repkar/multi-server ./server
-  - docker build -t repkar/multi-worker ./worker
+  - docker build -t robertrepka/multi-client ./client
+  - docker build -t robertrepka/multi-nginx ./nginx
+  - docker build -t robertrepka/multi-server ./server
+  - docker build -t robertrepka/multi-worker ./worker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  - docker push repkar/multi-client
-  - docker push repkar/multi-nginx
-  - docker push repkar/multi-server
-  - docker push repkar/multi-worker
+  - docker push robertrepka/multi-client
+  - docker push robertrepka/multi-nginx
+  - docker push robertrepka/multi-server
+  - docker push robertrepka/multi-worker
