@@ -1,0 +1,21 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -r repkar/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run repkar/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t repkar/multi-client ./client
+  - docker build -t repkar/multi-nginx ./nginx
+  - docker build -t repkar/multi-server ./server
+  - docker build -t repkar/multi-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push repkar/multi-client
+  - docker push repkar/multi-nginx
+  - docker push repkar/multi-server
+  - docker push repkar/multi-worker
